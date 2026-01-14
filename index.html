@@ -7,18 +7,25 @@
     <link rel="stylesheet" href="./css/output.css" />
   </head>
   <body>
+    <header class="container mx-auto py-3 border-b border-slate-400">
+      <div class="flex justify-end w-full">
+        <button class="btn btn-primary" onclick="my_modal_3.showModal()">
+          + Add
+        </button>
+      </div>
+    </header>
     <div class="flex flex-col gap-10">
-        <div class="flex gap-5 p-5">
+      <div class="flex gap-5 p-5">
         <button class="btn btn-info" id="prev">Prev</button>
         <button class="btn btn-info" id="next">Next</button>
       </div>
       <div id="container" class="grid grid-cols-3 gap-10"></div>
-    
     </div>
     <div id="loader" class="grid grid-cols-3 gap-10"></div>
     <template id="templateCard">
       <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
+        <div
+          class="card-body border-2 border-transparent rounded-[10px] hover:border-blue-700 duration-[0.4s]">
           <h2 class="card-title"></h2>
           <p></p>
           <div class="card-actions justify-end">
@@ -30,24 +37,32 @@
                   height="15"
                   viewBox="0 0 15 15"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                  xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M5.5 1C5.22386 1 5 1.22386 5 1.5C5 1.77614 5.22386 2 5.5 2H9.5C9.77614 2 10 1.77614 10 1.5C10 1.22386 9.77614 1 9.5 1H5.5ZM3 3.5C3 3.22386 3.22386 3 3.5 3H5H10H11.5C11.7761 3 12 3.22386 12 3.5C12 3.77614 11.7761 4 11.5 4H11V12C11 12.5523 10.5523 13 10 13H5C4.44772 13 4 12.5523 4 12V4L3.5 4C3.22386 4 3 3.77614 3 3.5ZM5 4H10V12H5V4Z"
                     fill="currentColor"
                     fill-rule="evenodd"
-                    clip-rule="evenodd"
-                  ></path>
+                    clip-rule="evenodd"></path>
                 </svg>
               </button>
             </div>
             <div class="tooltip" data-tip="More Info">
-              
-              <a href="carinfo.html">
-                  <button class="btn btn-info js-info">
-                  <svg class="pointer-events-none" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+              <a target="_blank">
+                <button class="btn btn-info js-info js-info">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"></path>
+                  </svg>
                 </button>
-                </a>
+              </a>
             </div>
           </div>
         </div>
@@ -68,6 +83,97 @@
         </div>
       </div>
     </template>
+
+    <!-- toast -->
+    <template id="toastTempate">
+      <div role="alert" class="alert alert-info">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="h-6 w-6 shrink-0 stroke-current">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>New software update available.</span>
+      </div>
+    </template>
+
+    <div
+      class="fixed top-5 right-5 flex flex-col gap-3 z-[999]"
+      id="toast"></div>
+    <dialog id="my_modal_3" class="modal">
+      <div class="modal-box">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <h3 class="text-lg font-bold">Add cars</h3>
+        <p>Malumotlarni kiriting</p>
+        <form
+          id="carAddForm"
+          class="w-full h-[250px] overflow-y-auto overflow-x-hidden">
+          <input
+            name="name"
+            type="text"
+            placeholder="Car name"
+            class="w-full input js-car-name" />
+          <input
+            name="year"
+            type="number"
+            min="2000"
+            max="2025"
+            placeholder="Car year"
+            class="input w-full" />
+          <input type="color" name="color" class="" />
+          <input
+            name="maxSpeed"
+            type="text"
+            placeholder="Max-Speed"
+            class="input w-full" />
+          <input
+            name="horsePower"
+            type="number"
+            placeholder="horsePower"
+            class="input w-full" />
+          <input
+            name="seatCount"
+            type="number"
+            placeholder="seatCount"
+            class="input w-full" />
+
+          <input
+            name="country"
+            type="text"
+            placeholder="country"
+            class="input w-full" />
+
+          <input
+            name="fuelType"
+            type="text"
+            placeholder="fuelType"
+            class="input w-full" />
+
+          <input
+            name="doorCount"
+            type="number"
+            placeholder="doorCount"
+            class="input w-full" />
+          <input
+            name="colorName"
+            type="text"
+            placeholder="colorName"
+            class="input w-full" />
+
+          <button class="btn w-full js-btn">Submit</button>
+        </form>
+      </div>
+    </dialog>
     <script src="./js/app.js"></script>
   </body>
 </html>
