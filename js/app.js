@@ -1,22 +1,20 @@
-const elContainer = document.getElementById("container");
-const elPrev = document.getElementById("prev");
-const elNext = document.getElementById("next");
-const elCarName = document.querySelector(".js-car-name");
-const elCarYear = document.querySelector(".js-car-year");
-const elCarColor = document.querySelector(".js-car-color");
-const elCarSpeed = document.querySelector(".js-car-speed");
-const elCarPower = document.querySelector(".js-car-power");
-const elCarBtn = document.querySelector(".js-btn");
-const elToastTemlapte = document.getElementById("toastTempate");
-const elToast = document.getElementById("toast");
+const elContanier = document.getElementById("contanier");
+const elprev = document.getElementById("prev");
+const elnext = document.getElementById("next");
 const elCarForm = document.getElementById("carAddForm");
-
-let limit = 3;
-let skip = 0;
-
+const elEditModal = document.getElementById("editModal");
+const eltoast = document.getElementById("toast");
+const elspan = document.getElementById("span");
+const elCarEditForm = document.getElementById("carEditForm");
 loader(true);
+
+let limit = 6;
+let skip = 0;
+let total = 0;
+
 function nextPrev() {
-  elContainer.innerHTML = null;
+  elContanier.innerHTML = null;
+  loader(true);
   fetch(
     `https://json-api.uz/api/project/fn44-amaliyot/cars?limit=${limit}&skip=${skip}`
   )
@@ -34,39 +32,62 @@ function nextPrev() {
     });
 }
 nextPrev();
-function ui(data) {
-  const elTemplateCard = document.getElementById("templateCard");
-  data.forEach((element) => {
-    const clone = elTemplateCard.content.cloneNode(true);
-
-    clone.querySelector("h2").innerText = element.name
-      ? element.name
-      : "No Title";
-    clone.querySelector("button").id = element.id;
-    clone.querySelector("p").innerText = element.id;
-    clone.querySelector("a").href = `/details.html?id=${element.id}`;
-    elContainer.appendChild(clone);
-  });
-}
 
 function loader(bool) {
+  const eltemplateSkeleton = document.getElementById("templateSkeleton");
   const elloader = document.getElementById("loader");
-  const elTemplateSkeleton = document.getElementById("templateSkeleton");
   elloader.innerHTML = null;
   if (bool) {
-    Array.from({ length: 3 }, (_, index) => index).forEach(() => {
-      elloader.appendChild(elTemplateSkeleton.cloneNode(true).content);
+    Array.from({ length: 6 }, (_, index) => index).forEach(() => {
+      elloader.append(eltemplateSkeleton.cloneNode(true).content);
     });
   }
 }
-loader(true);
+function ui(data, clean = true) {
+  if (clean) {
+    elContanier.innerHTML = null;
+  }
+  const elTemp = document.getElementById("templateCard");
+  data.forEach((element) => {
+    const clone = elTemp.cloneNode(true).content;
+    clone.querySelector("h2").innerText = element.name
+      ? element.name
+      : "No Data";
+    clone.querySelector("p").innerText = element.country
+      ? element.country
+      : "No Data";
+    clone.querySelector(".js-delete-button").id = element.id;
+    clone.querySelector(".js-edit-button").id = element.id;
+    clone.querySelector("a").href = `/details.html?id=${element.id}`;
 
-elContainer.addEventListener("click", (evt) => {
-  if (evt.target.classList.contains("js-delete")) {
+    elContanier.appendChild(clone);
+  });
+}
+
+elprev.addEventListener("click", () => {
+  skip -= limit;
+  if (skip > 2) {
+    elprev.style.display = "none";
+  } else {
+    elprev.style.display = "block";
+  }
+  nextPrev();
+});
+elnext.addEventListener("click", () => {
+  skip += limit;
+  nextPrev();
+});
+
+elContanier.addEventListener("click", (evt) => {
+  // delete
+  if (evt.target.classList.contains("js-delete-button")) {
     evt.target.disabled = true;
     evt.target.innerHTML = `
     <svg class="animate-spin" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.90321 7.29677C1.90321 10.341 4.11041 12.4147 6.58893 12.8439C6.87255 12.893 7.06266 13.1627 7.01355 13.4464C6.96444 13.73 6.69471 13.9201 6.41109 13.871C3.49942 13.3668 0.86084 10.9127 0.86084 7.29677C0.860839 5.76009 1.55996 4.55245 2.37639 3.63377C2.96124 2.97568 3.63034 2.44135 4.16846 2.03202L2.53205 2.03202C2.25591 2.03202 2.03205 1.80816 2.03205 1.53202C2.03205 1.25588 2.25591 1.03202 2.53205 1.03202L5.53205 1.03202C5.80819 1.03202 6.03205 1.25588 6.03205 1.53202L6.03205 4.53202C6.03205 4.80816 5.80819 5.03202 5.53205 5.03202C5.25591 5.03202 5.03205 4.80816 5.03205 4.53202L5.03205 2.68645L5.03054 2.68759L5.03045 2.68766L5.03044 2.68767L5.03043 2.68767C4.45896 3.11868 3.76059 3.64538 3.15554 4.3262C2.44102 5.13021 1.90321 6.10154 1.90321 7.29677ZM13.0109 7.70321C13.0109 4.69115 10.8505 2.6296 8.40384 2.17029C8.12093 2.11718 7.93465 1.84479 7.98776 1.56188C8.04087 1.27898 8.31326 1.0927 8.59616 1.14581C11.4704 1.68541 14.0532 4.12605 14.0532 7.70321C14.0532 9.23988 13.3541 10.4475 12.5377 11.3662C11.9528 12.0243 11.2837 12.5586 10.7456 12.968L12.3821 12.968C12.6582 12.968 12.8821 13.1918 12.8821 13.468C12.8821 13.7441 12.6582 13.968 12.3821 13.968L9.38205 13.968C9.10591 13.968 8.88205 13.7441 8.88205 13.468L8.88205 10.468C8.88205 10.1918 9.10591 9.96796 9.38205 9.96796C9.65819 9.96796 9.88205 10.1918 9.88205 10.468L9.88205 12.3135L9.88362 12.3123C10.4551 11.8813 11.1535 11.3546 11.7585 10.6738C12.4731 9.86976 13.0109 8.89844 13.0109 7.70321Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>`;
     deleteCars(evt.target.id);
+  }
+  if (evt.target.classList.contains("js-edit-button")) {
+    getById(evt.target.id);
   }
 });
 
@@ -81,41 +102,68 @@ function deleteCars(id) {
       document.getElementById(id).closest(".card").remove();
       alert(res);
     })
-    .catch(() => {
-      console.log("Error ❌");
-    })
+    .catch(() => {})
     .finally(() => {});
 }
-
-elPrev.addEventListener("click", () => {
-  skip -= limit;
-
-  if (skip > 4) {
-    elPrev.style.display = "none";
-  } else {
-    elPrev.style.display = "block";
-  }
-  nextPrev();
-});
-elNext.addEventListener("click", () => {
-  skip += limit;
-  nextPrev();
-});
-
-elContainer.addEventListener("click", (evt) => {
-  if (evt.target.classList.contains("js-info")) {
-    evt.target.disabled = true;
-    const elPage = document.getElementById("infoHTML");
-  }
-});
 
 elCarForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   const formData = new FormData(elCarForm);
   const result = {};
   formData.forEach((value, key) => {
+    if (value.trim() == "") {
+      console.log(key + "Toldiring");
+      const clone = eltoast.content.cloneNode(true);
+      const elspan = clone.querySelector("span");
+      elspan.innerText = key + " to'ldiring";
+      document.body.appendChild(clone);
+    }
     result[key] = value;
   });
 
-  console.log(result);
+  addData(result);
 });
+
+function addData(data) {
+  fetch("https://json-api.uz/api/project/fn44-amaliyot/cars", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      elCarForm.reset();
+      ui([res], false);
+      document.getElementById("my_modal_3").close();
+    });
+}
+
+function getById(id) {
+  fetch(`https://json-api.uz/api/project/fn44-amaliyot/cars/${id}`)
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      elEditModal.showModal();
+      elCarEditForm.name.defaultValue = res.name ? res.country : "No Data";
+      elCarEditForm.year.defaultValue = res.year ? res.year : "No Data";
+      elCarEditForm.maxSpeed.defaultValue = res.maxSpeed
+        ? res.maxSpeed
+        : "No Data";
+      elCarEditForm.horsePower.defaultValue = res.horsePower
+        ? res.horsePower
+        : "No Data";
+      elCarEditForm.country.defaultValue = res.country
+        ? res.country
+        : "No Data";
+      elCarEditForm.fuelType.defaultValue = res.fuelType
+        ? res.fuelType
+        : "No Data";
+    })
+    .catch(() => {})
+    .finally(() => {});
+}
