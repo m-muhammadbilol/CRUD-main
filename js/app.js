@@ -5,6 +5,7 @@ const elCarForm = document.getElementById("carAddForm");
 const elEditModal = document.getElementById("editModal");
 const eltoast = document.getElementById("toast");
 const elspan = document.getElementById("span");
+const elmode = document.getElementById("mode");
 const elCarEditForm = document.getElementById("carEditForm");
 loader(true);
 
@@ -167,3 +168,14 @@ function getById(id) {
     .catch(() => {})
     .finally(() => {});
 }
+
+const eldark = document.getElementById("dark");
+const ellight = document.getElementById("light");
+const elbody = document.getElementById("body");
+
+ellight.addEventListener("click", () => {
+  elbody.classList.add("bg-black");
+});
+eldark.addEventListener("click", () => {
+  elbody.style.backgroundColor = "white";
+});
